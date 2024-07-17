@@ -1,0 +1,32 @@
+server:
+  servlet:
+    context-path: /outbox
+spring:
+  application:
+    name: message-relay
+  rabbitmq:
+    host: localhost
+    password: guest
+    username: guest
+    port: 5672
+  datasource:
+    url: jdbc:mysql://localhost:3306/mandatedb
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+app:
+  poll:
+    cron: 0/20 * * * * *
+
+rabbitmq:
+  exchange:
+    outbox-exchange: 'outbox-exchange'
+  queue:
+    outbox-messaging-queue: 'outbox-messaging-queue'
