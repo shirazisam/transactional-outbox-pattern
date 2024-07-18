@@ -38,6 +38,6 @@ public class PollOutboxService {
      */
     private void processOutBoxTableItem(Outbox item) {
         mandatePublisher.publishMessage(OutboxMapper.INSTANCE.outboxToOoutboxDto(item));
-        System.out.println("published item = " + item);
+        log.info("published item = {}", item);
     }
 }
