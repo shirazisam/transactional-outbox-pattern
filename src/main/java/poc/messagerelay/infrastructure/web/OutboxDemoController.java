@@ -1,11 +1,11 @@
 package poc.messagerelay.infrastructure.web;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import poc.messagerelay.domain.data.MandateDto;
 import poc.messagerelay.domain.port.in.MandateServicePort;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/mandates")
@@ -21,6 +21,11 @@ public class OutboxDemoController {
     @PostMapping
     public MandateDto addMandate(@RequestBody MandateDto mandateDto) {
         return mandateServicePort.addMandate(mandateDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MandateDto>> getMandates() {
+        return ResponseEntity.ok(mandateServicePort.getMandates());
     }
 
 }
