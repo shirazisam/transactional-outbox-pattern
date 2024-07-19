@@ -23,4 +23,14 @@ public class MandateServiceImpl implements MandateServicePort {
     public List<MandateDto> getMandates() {
         return mandatePersistencePort.getMandates();
     }
+
+    @Override
+    public MandateDto getMandateById(Long id) {
+        return mandatePersistencePort.getMandateById(id);
+    }
+
+    @Override
+    public void deleteMandate(Long id) {
+        mandatePersistencePort.deleteMandate(id);
+    }
 }

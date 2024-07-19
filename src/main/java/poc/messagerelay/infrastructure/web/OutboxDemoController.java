@@ -28,4 +28,13 @@ public class OutboxDemoController {
         return ResponseEntity.ok(mandateServicePort.getMandates());
     }
 
+    @GetMapping(value = "/{id}", produces = { "application/json" })
+    public ResponseEntity<MandateDto> getMandateById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(mandateServicePort.getMandateById(id));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteMandate(@PathVariable("id") Long id) {
+        mandateServicePort.deleteMandate(id);
+    }
 }

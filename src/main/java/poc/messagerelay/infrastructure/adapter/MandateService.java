@@ -34,7 +34,7 @@ public class MandateService implements MandatePersistencePort {
         Optional<Mandate> maybePresent = mandateRepository.findById(mandateDto.getId());
         String state = maybePresent.isPresent() ? "UPDATED" : "CREATED";
         Mandate saved = mandateRepository.save(mandateMapper.mandateDtoToMandate(mandateDto));
-        outboxRepository.save(Outbox.builder().mandateId(saved.getId()).operation(state).build());
+        outboxRepository.save(new Outbox(null, saved.getId(), state));
         log.info("Mandate {} created", saved.getId());
         return mandateMapper.mandateToMandateDto(saved);
     }
@@ -43,4 +43,21 @@ public class MandateService implements MandatePersistencePort {
     public List<MandateDto> getMandates() {
         return mandateRepository.findAll().stream().map(mandateMapper::mandateToMandateDto).collect(Collectors.toList());
     }
+
+    @Override
+    public MandateDto getMandateById(Long id) {
+        return mandateRepository.findById(id).map(mandateMapper::mandateToMandateDto).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMandate(Long id) {
+        Optional<Mandate> mandate = mandateRepository.findById(id);
+        if (mandate.isPresent()) {
+            Mandate entity = mandate.get();
+            mandateRepository.delete(entity);
+            outboxRepository.save(new Outbox(null, entity.getId(), "DELETED"));
+        }
+    }
+
 }
