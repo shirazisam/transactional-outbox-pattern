@@ -10,7 +10,7 @@ public interface OutboxMapper {
 
     OutboxMapper INSTANCE = Mappers.getMapper(OutboxMapper.class);
 
-    OutboxDto outboxToOoutboxDto(Outbox outbox);
+    OutboxDto outboxToDto(Outbox outbox);
 
-    Outbox outboxDtoToOutbox(OutboxDto outboxDto);
+    Outbox dtoToOutbox(OutboxDto outboxDto);
 }

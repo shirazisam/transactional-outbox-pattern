@@ -17,7 +17,6 @@ public class OutboxDemoController {
         this.mandateServicePort = mandateServicePort;
     }
 
-
     @PostMapping
     public MandateDto addMandate(@RequestBody MandateDto mandateDto) {
         return mandateServicePort.addMandate(mandateDto);

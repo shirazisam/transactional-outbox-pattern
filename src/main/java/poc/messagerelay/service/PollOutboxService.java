@@ -27,7 +27,7 @@ public class PollOutboxService {
     public void pollOutboxTable() {
         log.info("Polling Outbox for new events {}", LocalDateTime.now());
         for (Outbox item : outboxRepository.findAll()) {
-            processOutBoxTableItem(item);
+            processOutBoxTableEntry(item);
             outboxRepository.delete(item);
         }
     }
@@ -36,8 +36,8 @@ public class PollOutboxService {
      * Put the outbox item on a message queue
      * @param item to put on message queue
      */
-    private void processOutBoxTableItem(Outbox item) {
-        mandatePublisher.publishMessage(OutboxMapper.INSTANCE.outboxToOoutboxDto(item));
+    private void processOutBoxTableEntry(Outbox item) {
+        mandatePublisher.publishMessage(OutboxMapper.INSTANCE.outboxToDto(item));
         log.info("published item = {}", item);
     }
 }
