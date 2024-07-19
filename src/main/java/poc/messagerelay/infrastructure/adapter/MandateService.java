@@ -12,6 +12,7 @@ import poc.messagerelay.infrastructure.mapper.MandateMapper;
 import poc.messagerelay.infrastructure.repository.MandateRepository;
 import poc.messagerelay.infrastructure.repository.OutboxRepository;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class MandateService implements MandatePersistencePort {
         Optional<Mandate> maybePresent = mandateRepository.findById(mandateDto.getId());
         String state = maybePresent.isPresent() ? "UPDATED" : "CREATED";
         Mandate saved = mandateRepository.save(mandateMapper.mandateDtoToMandate(mandateDto));
-        outboxRepository.save(new Outbox(null, saved.getId(), state));
+        outboxRepository.save(new Outbox(null, saved.getId(), state, Calendar.getInstance()));
         log.info("Mandate {} created", saved.getId());
         return mandateMapper.mandateToMandateDto(saved);
     }
@@ -56,7 +57,7 @@ public class MandateService implements MandatePersistencePort {
         if (mandate.isPresent()) {
             Mandate entity = mandate.get();
             mandateRepository.delete(entity);
-            outboxRepository.save(new Outbox(null, entity.getId(), "DELETED"));
+            outboxRepository.save(new Outbox(null, entity.getId(), "DELETED", Calendar.getInstance()));
         }
     }
 

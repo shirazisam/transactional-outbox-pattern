@@ -25,7 +25,7 @@ public class PollOutboxService {
     @Scheduled(cron = "${app.poll.cron}")
     @Transactional
     public void pollOutboxTable() {
-        log.info("Polling for Outbox for new events {}", LocalDateTime.now());
+        log.info("Polling Outbox for new events {}", LocalDateTime.now());
         for (Outbox item : outboxRepository.findAll()) {
             processOutBoxTableItem(item);
             outboxRepository.delete(item);
