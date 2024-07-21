@@ -32,11 +32,16 @@ public class MandateService implements MandatePersistencePort {
     @Override
     @Transactional
     public MandateDto addMandate(MandateDto mandateDto) {
-        Optional<Mandate> maybePresent = mandateRepository.findById(mandateDto.getId());
-        String state = maybePresent.isPresent() ? "UPDATED" : "CREATED";
+        String state;
+        Optional<Mandate> maybePresent = Optional.empty();
+        if (mandateDto.getId() != null) {
+            maybePresent = mandateRepository.findById(mandateDto.getId());
+        }
+        state = maybePresent.isPresent() ? "UPDATED" : "CREATED";
         Mandate savedMandate = mandateRepository.save(mandateMapper.mandateDtoToMandate(mandateDto));
+        /* save the action in the Outbox table, in the same transaction */
         outboxRepository.save(new Outbox(null, savedMandate.getId(), state, Calendar.getInstance()));
-        log.info("Mandate {} {}", savedMandate.getId(), state);
+        log.info("Mandate {} is {}", savedMandate.getId(), state);
         return mandateMapper.mandateToMandateDto(savedMandate);
     }
 
