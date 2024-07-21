@@ -6,6 +6,10 @@ and each entry is placed on a Rabbit queue. Each entry from the Outbox table is 
 message placement. If the application crashes _before_ sending the messages, they will be sent once the
 application restarts.
 
+## Prerequisite conditions
+- local MySql database with existing ```mandatedb``` schema
+- local RabbitMQ broker instance running on port ```5672```
+
 ## Installing and running the application
 
 - clone the repository in a directory:
