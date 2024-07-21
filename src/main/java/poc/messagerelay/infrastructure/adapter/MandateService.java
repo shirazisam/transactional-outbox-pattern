@@ -40,7 +40,7 @@ public class MandateService implements MandatePersistencePort {
         state = maybePresent.isPresent() ? "UPDATED" : "CREATED";
         Mandate savedMandate = mandateRepository.save(mandateMapper.mandateDtoToMandate(mandateDto));
         /* save the action in the Outbox table, in the same transaction */
-        outboxRepository.save(new Outbox(null, savedMandate.getId(), state, Calendar.getInstance()));
+        outboxRepository.save(Outbox.builder().mandateId(savedMandate.getId()).operation(state).timestamp(Calendar.getInstance()).build());
         log.info("Mandate {} is {}", savedMandate.getId(), state);
         return mandateMapper.mandateToMandateDto(savedMandate);
     }
