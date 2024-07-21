@@ -27,11 +27,14 @@ make sure your `JAVA_HOME` environment variable is set correctly
 ```
 mvnw spring-boot:run
 ```
-## Use the web API to execute CRUD commands on the database
+
+---
+
+## Use the web REST API to execute CRUD commands on the database
 
 Use **Postman** (or other) to send JSON POST & DELETE requests
 
-### Creat a Mandate object - use the following POST url:
+### Create a Mandate object - use the following POST url:
 ```
 http://localhost:8080/outbox/api/v1/mandates
 ```
@@ -53,7 +56,7 @@ removing it from the Outbox table:
 ```
 Here, the `"mandateId":18` is the ID of the newly created Mandate and `operation` shows that
 the object was `CREATED` at the given timestamp. The `id` in the document is the ID of the Outbox item.
----
+
 ### Update a Mandate object - use the _same_ POST URL as before
 This time, ***specify the ID*** of the Mandate you wish to update, along with modified values, e.g.:
 ```
@@ -86,7 +89,6 @@ This will place the following JSON document on the `outbox-messaging-queue`:
 ```
 {"id":26,"mandateId":18,"operation":"DELETED","timestamp":"2024-07-21 17:18:22"}
 ```
-
 ### Querying the Mandate database (GET)
 The database can be queried by ID by using the following GET request:
 ```
