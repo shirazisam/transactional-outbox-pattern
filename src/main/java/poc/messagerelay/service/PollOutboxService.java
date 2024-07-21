@@ -10,8 +10,6 @@ import poc.messagerelay.infrastructure.mapper.OutboxMapper;
 import poc.messagerelay.infrastructure.publisher.MandatePublisher;
 import poc.messagerelay.infrastructure.repository.OutboxRepository;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @Service
 public class PollOutboxService {
@@ -25,7 +23,7 @@ public class PollOutboxService {
     @Scheduled(cron = "${app.poll.cron}")
     @Transactional
     public void pollOutboxTable() {
-        log.info("Polling Outbox for new events {}", LocalDateTime.now());
+        log.info("Polling Outbox for new events..");
         for (Outbox item : outboxRepository.findAll()) {
             processOutBoxTableEntry(item);
             outboxRepository.delete(item);
